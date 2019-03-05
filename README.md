@@ -4,3 +4,5 @@
 entware.tar > Internal storage
 
 gnutar > Internal storage
+
+Packages: wget, curl, ca-bundle, ca-certificates, nano, mc, openssh-server. SSH port — 2222, login — root, password — 12345 (use passwd to change password). 
