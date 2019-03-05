@@ -1,0 +1,52 @@
+#!/system/bin/sh
+
+###Entware start script for Android
+
+MEDIA_PATH="/data/media/0" ###Your custom path for entware.tar and gnutar
+INSTALL_PATH="/data/local"
+
+function install_entware() {
+    cp $MEDIA_PATH/gnutar $INSTALL_PATH/gnutar
+    chmod +x $INSTALL_PATH/gnutar
+    rm -rf $INSTALL_PATH/entware
+    mkdir -p $INSTALL_PATH/entware
+    cd $INSTALL_PATH/entware
+    $INSTALL_PATH/gnutar xpvf $MEDIA_PATH/entware.tar
+    rm -rf $INSTALL_PATH/gnutar
+    rm -rf $MEDIA_PATH/entware.tar
+    rm -rf $MEDIA_PATH/gnutar
+}
+
+function run_entware() {
+    /system/bin/mount -o rw,remount /
+    /system/bin/mkdir /opt
+    /system/bin/mkdir /bin
+    /system/bin/mount -o bind $INSTALL_PATH/entware /opt
+    ln -s /opt/bin/sh /bin/sh
+    /system/bin/mount -o ro,remount /
+
+    /system/bin/mount -o rw,remount /system
+    ln -s /opt/etc/resolv.conf /system/etc/resolv.conf
+    /system/bin/mount -o ro,remount /system
+
+    /opt/etc/init.d/rc.unslung start
+}
+
+while [ $(getprop sys.boot_completed) != "1" ]; do
+    sleep 5
+done
+
+if [ -f $MEDIA_PATH/entware.tar ] && [ -f $MEDIA_PATH/gnutar ]; then
+    MEDIA_PATH=$MEDIA_PATH
+elif [ -f /data/media/0/entware.tar ] && [ -f /data/media/0/gnutar ]; then
+    MEDIA_PATH="/data/media/0"
+elif [ -f /sdcard/entware.tar ] && [ -f /sdcard/gnutar ]; then
+    MEDIA_PATH="/sdcard"
+else
+    MEDIA_PATH=""
+fi
+
+[ ! -z "$MEDIA_PATH" ] && install_entware
+[ -f "$INSTALL_PATH/entware//etc/init.d/rc.unslung" ] && run_entware
+
+exit 0
