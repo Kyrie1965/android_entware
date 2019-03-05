@@ -47,6 +47,6 @@ else
 fi
 
 [ ! -z "$MEDIA_PATH" ] && install_entware
-[ -f "$INSTALL_PATH/entware//etc/init.d/rc.unslung" ] && run_entware
+[ -f "$INSTALL_PATH/entware/etc/init.d/rc.unslung" ] && run_entware
 
 exit 0
