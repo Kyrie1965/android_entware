@@ -40,6 +40,8 @@ if [ -f $MEDIA_PATH/entware.tar ] && [ -f $MEDIA_PATH/gnutar ]; then
     MEDIA_PATH=$MEDIA_PATH
 elif [ -f /data/media/0/entware.tar ] && [ -f /data/media/0/gnutar ]; then
     MEDIA_PATH="/data/media/0"
+elif [ -f /storage/emulated/0/entware.tar ] && [ -f /storage/emulated/0/gnutar ]; then
+    MEDIA_PATH="/storage/emulated/0"
 elif [ -f /sdcard/entware.tar ] && [ -f /sdcard/gnutar ]; then
     MEDIA_PATH="/sdcard"
 else
